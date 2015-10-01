@@ -8,8 +8,8 @@ from ouou.items import OuouItem
 class OuouSpider(Spider):
     name = 'ouou'
     allowed_domains = ['ouou.cn']
-    # start_urls = ['http://bbs.ouou.cn/thread-htm-fid-6-type-233-modelid-9.html']
-    start_urls = ['http://bbs.ouou.cn/thread-htm-fid-6-type-233-modelid-9-page-%s.html' % page for page in xrange(1, 512)]
+    start_urls = ['http://bbs.ouou.cn/thread-htm-fid-6-type-233-modelid-9.html']
+    # start_urls = ['http://bbs.ouou.cn/thread-htm-fid-6-type-233-modelid-9-page-%s.html' % page for page in xrange(1, 512)]
 
     def parse(self, response):
         threads = Selector(response).xpath('//td[@class="subject f14"]')
@@ -23,6 +23,7 @@ class OuouSpider(Spider):
                 '//h1[@id="subject_tpc"][@class="read_h1"]/text()').extract()[0]
         item['url'] = Selector(response).xpath(
                 '//h1[@id="subject_tpc"][@class="read_h1"]/a[@href="javascript:;"]/@title').extract()[0]
+        item['tid'] = item['url'].split('&')[-2].split('=')[-1]
 
         content_hdr = '//div[@class="tpc_content"]/div[@class="f14 mb10"][@id="read_tpc"]'
 
