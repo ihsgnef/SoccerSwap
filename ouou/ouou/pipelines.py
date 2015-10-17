@@ -1,27 +1,24 @@
-# -*- coding: utf-8 -*-
-
 # Define your item pipelines here
-#
-# Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 import pymongo
+from pymongo import errors
 
 from scrapy.conf import settings
 from scrapy.exceptions import DropItem
 from scrapy import log
 
+from ouou.items import OuouItem
 
 class MongoDBPipeline(object):
 
     def __init__(self):
-        self.server = 'localhost'
-        self.port = 27017
-        self.db = 'ouou'
-        self.col = 'threads'
-        connection = pymongo.MongoClient(self.server, self.port)
-        db = connection[self.db]
-        self.collection = db[self.col]
+        connection = pymongo.MongoClient(settings['MONGODB_SERVER'], 
+                                         settings['MONGODB_PORT'],
+                                         replicaset=settings['MONGODB_REPLICASET'])
+        db = connection[settings['MONGODB_DB']]
+        self.collection = db[settings['MONGODB_COLLECTION']]
+        self.collection.ensure_index(settings['MONGODB_UNIQUE_KEY'], unique=True)
+        self.stop_on_duplicate = 0
 
     def process_item(self, item, spider):
         valid = True
@@ -31,8 +28,16 @@ class MongoDBPipeline(object):
                 raise DropItem("Missing {0}".format(data))
 
         if valid:
-            self.collection.insert(dict(item))
-            log.msg("Thread added to MongoDB", 
-                    level=log.DEBUG, spider=spider)
+            try:
+                self.collection.insert(dict(item))
+                log.msg("Thread added to MongoDB", 
+                        level=log.DEBUG, spider=spider)
+            except errors.DuplicateKeyError:
+                log.msg(u'Duplicate key found', 
+                        level=log.DEBUG, spider=spider)
+                pass
 
         return item
+
+if __name__ == '__main__':
+    pipeline = MongoDBPipeline()
