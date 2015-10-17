@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import scrapy
 from scrapy import Spider
 from scrapy.selector import Selector
@@ -7,7 +9,7 @@ from enjoyz.items import EnjoyzItem
 class EnjoyzSpider(Spider):
     name = 'enjoyz'
     allowed_domains = ['enjoyz.com']
-    start_urls = ['http://bbs.enjoyz.com/forum.php?mod=forumdisplay&fid=15&filter=sortid&sortid=1&typeid=149']
+    start_urls = ['http://bbs.enjoyz.com/forum.php?mod=forumdisplay&fid=15&sortid=1&typeid=149&filter=sortid&sortid=1&typeid=149&page=%s' % page for page in xrange(1, 3)]
 
     def parse(self, response):
         threads = Selector(response).xpath('//th[@class="new s_ltitle"]')
@@ -24,16 +26,14 @@ class EnjoyzSpider(Spider):
         url = Selector(response).xpath('//span[@class="xg1"]/a/@href').extract()[0]
         item['url'] = response.urljoin(url)
 
-        description = ''
-        descriptions = Selector(response).xpath('//td[@class="t_f"]').extract()
-        for des in descriptions:
-            if des.startswith('<'):
-                print '*****************', des, '==============='
-                if des.startswith('<font') and not des.startswith(
-                        '<font class="jammer"'):
-                    print ''
-            else:
-                description += '\n' + des
-        item['description'] = description
+        values = Selector(response).xpath('//table[@class="cgtl mbm"]//td/text()').extract()
+        item['price'] = int(values[1].split(' ')[0])
+        item['size'] = values[2][:-1]
+        item['stud'] = values[3][:-1]
+        item['is_new'] = values[4][:-1]
+        brand_series = values[0]
+        # puma » 其他 
+        item['brand'] = brand_series.split(' ')[0]
+        item['series'] = brand_series.split(' ')[-2]
 
         yield item

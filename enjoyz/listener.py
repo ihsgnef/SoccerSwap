@@ -1,7 +1,7 @@
 import time
 import pymongo
 
-c = pymongo.MongoClient('localhost', replicaset='foo')
+c = pymongo.MongoClient('localhost:27018', replicaset='foo0')
 
 oplog = c.local.oplog.rs
 first = oplog.find().sort('$natural', pymongo.DESCENDING).limit(-1).next()
