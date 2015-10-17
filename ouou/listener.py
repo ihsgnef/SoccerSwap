@@ -14,6 +14,9 @@ while True:
         for doc in cursor:
             ts = doc['ts']
             if doc['op'] == 'i':
-                if 'title' in doc['o']:
-                    print doc['o']['title']
+                if 'title' in doc['o'] and 'size' in doc['o']:
+                    doc = doc['o']
+                    if doc['size'] == 'JP280' or doc['size'] == 'JP275' or doc['size'] == 'JP285':
+                        print doc['size'] + '\t', doc['title']
+                        print '\t' + doc['url']
         time.sleep(1)
