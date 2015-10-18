@@ -3,7 +3,7 @@ import pymongo
 import Queue
 import threading
 
-time_gap = 1
+time_gap = 5
 lock = threading.Lock()
 outfile_dir = '/Users/fs/Downloads/soccerswap'
 
