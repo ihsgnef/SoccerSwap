@@ -9,7 +9,7 @@ from enjoyz.items import EnjoyzItem
 class EnjoyzSpider(Spider):
     name = 'enjoyz'
     allowed_domains = ['enjoyz.com']
-    start_urls = ['http://bbs.enjoyz.com/forum.php?mod=forumdisplay&fid=15&sortid=1&typeid=149&filter=sortid&sortid=1&typeid=149&page=%s' % page for page in xrange(1, 20)]
+    start_urls = ['http://bbs.enjoyz.com/forum.php?mod=forumdisplay&fid=15&sortid=1&typeid=149&filter=sortid&sortid=1&typeid=149&page=%s' % page for page in xrange(1, 3)]
 
     def parse(self, response):
         threads = Selector(response).xpath('//th[@class="new s_ltitle"]')
