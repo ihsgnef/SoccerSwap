@@ -19,6 +19,7 @@ class EnjoyzSpider(Spider):
 
     def parse_thread_contents(self, response):
         item = EnjoyzItem()
+        item['source'] = 'enjoyz'
         
         item['title'] = Selector(response).xpath(
                 '//h1[@class="ts"]/span[@id="thread_subject"]/text()').extract()[0]
@@ -29,12 +30,12 @@ class EnjoyzSpider(Spider):
         values = Selector(response).xpath('//table[@class="cgtl mbm"]//td/text()').extract()
         item['price'] = int(values[1].split(' ')[0])
         item['size'] = values[2][:-1]
-        item['stud'] = values[3][:-1]
+        item['stud'] = values[3][:2]
         item['is_new'] = True if values[4][:-1].startswith('\xe5\x85\xa8\xe6\x96\xb0'.decode('utf-8')) else False
         brand_series = values[0]
         # puma » 其他 
-        item['brand'] = brand_series.split(' ')[0]
-        item['series'] = brand_series.split(' ')[-2]
+        item['brand'] = brand_series.split(' ')[0].lower()
+        item['series'] = brand_series.split(' ')[-2].lower()
 
         item['uname'] = Selector(response).xpath('//td[@class="pls"]//div[@class="pi"]//div[@class="authi"]/a/text()').extract()[0]
         time_str = Selector(response).xpath('//td[@class="plc"]//div[@class="pti"]//div[@class="authi"]/em/span/@title').extract()

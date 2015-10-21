@@ -20,6 +20,7 @@ class OuouSpider(Spider):
 
     def parse_thread_contents(self, response):
         item = OuouItem()
+        item['source'] = 'ouou'
         item['title'] = Selector(response).xpath(
                 '//h1[@id="subject_tpc"][@class="read_h1"]/text()').extract()[0]
         item['url'] = Selector(response).xpath(
@@ -57,14 +58,14 @@ class OuouSpider(Spider):
         for key, value in cates:
             if key == str_brand:
                 if '>' in value:
-                    item['brand'] = value.split(' > ')[0]
-                    item['series'] = value.split(' > ')[1]
+                    item['brand'] = value.split(' > ')[0].lower()
+                    item['series'] = value.split(' > ')[1].lower()
                 else:
-                    item['brand'] = value
+                    item['brand'] = value.lower()
             if key == str_size:
                 item['size'] = value
             if key == str_stud:
-                item['stud'] = value
+                item['stud'] = value[:2]
             if key == str_isnew:
                 item['is_new'] = True if value == '\xe5\x85\xa8\xe6\x96\xb0'.decode('utf-8') else False
             if key == str_price:
