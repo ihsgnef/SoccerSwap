@@ -8,8 +8,8 @@ NEWSPIDER_MODULE = 'enjoyz.spiders'
 ITEM_PIPELINES = ['enjoyz.pipelines.MongoDBPipeline',]
 
 MONGODB_SERVER = "localhost"
-MONGODB_REPLICASET = 'foo1'
-MONGODB_PORT = 27019
-MONGODB_DB = "enjoyz"
+MONGODB_REPLICASET = 'foo0'
+MONGODB_PORT = 27018
+MONGODB_DB = "forum"
 MONGODB_COLLECTION = "threads"
 MONGODB_UNIQUE_KEY = 'url'
