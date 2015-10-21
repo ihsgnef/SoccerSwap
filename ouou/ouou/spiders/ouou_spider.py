@@ -30,7 +30,7 @@ class OuouSpider(Spider):
 
         description = Selector(response).xpath(content_hdr + '/text()').extract()
         description = '\n'.join(description)
-        item['description'] = description
+        # item['description'] = description
         
         content = Selector(response).xpath(content_hdr)
         _images = content.xpath('//img/@src').extract()
@@ -38,7 +38,7 @@ class OuouSpider(Spider):
         for image in _images:
             if image.startswith('http://bbsimg.ouou.cn/Mon_'):
                 images.append(image.split('?')[0])
-        item['images'] = images
+        # item['images'] = images
 
 
         str_brand = u'\u54c1\u724c\u7cfb\u5217\uff1a'

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-
 import scrapy
 from scrapy import Spider
 from scrapy.selector import Selector
+from datetime import datetime
 
 from enjoyz.items import EnjoyzItem 
 
@@ -35,5 +35,10 @@ class EnjoyzSpider(Spider):
         # puma » 其他 
         item['brand'] = brand_series.split(' ')[0]
         item['series'] = brand_series.split(' ')[-2]
+
+        item['uname'] = Selector(response).xpath('//td[@class="pls"]//div[@class="pi"]//div[@class="authi"]/a/text()').extract()[0]
+        time_str = Selector(response).xpath('//td[@class="plc"]//div[@class="pti"]//div[@class="authi"]/em/span/@title').extract()
+        time_str = time_str[0]
+        item['post_time'] = datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S')
 
         yield item
