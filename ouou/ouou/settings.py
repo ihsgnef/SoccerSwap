@@ -8,8 +8,8 @@ NEWSPIDER_MODULE = 'ouou.spiders'
 ITEM_PIPELINES = ['ouou.pipelines.MongoDBPipeline']
 
 MONGODB_SERVER = "localhost"
-MONGODB_REPLICASET = 'foo'
-MONGODB_PORT = 27017
+MONGODB_REPLICASET = 'foo0'
+MONGODB_PORT = 27018
 MONGODB_DB = "ouou"
 MONGODB_COLLECTION = "threads"
 MONGODB_UNIQUE_KEY = 'tid'

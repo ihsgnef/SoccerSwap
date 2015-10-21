@@ -5,7 +5,7 @@ import threading
 
 time_gap = 5
 lock = threading.Lock()
-outfile_dir = '/Users/fs/Downloads/soccerswap'
+outfile_dir = '/home/fs/Downloads/soccerswap'
 
 def write_to_file(content):
     lock.acquire()
@@ -39,8 +39,8 @@ class listener(threading.Thread):
                 time.sleep(time_gap)
     
 def main():
-    ouou = pymongo.MongoClient('localhost', replicaset='foo')
-    ez = pymongo.MongoClient('localhost:27018', replicaset='foo0')
+    ouou = pymongo.MongoClient('localhost:27018', replicaset='foo0')
+    ez = pymongo.MongoClient('localhost:27019', replicaset='foo1')
     t1 = listener(ouou)
     t2 = listener(ez)
     t1.start()

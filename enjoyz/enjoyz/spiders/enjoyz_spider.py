@@ -9,7 +9,7 @@ from enjoyz.items import EnjoyzItem
 class EnjoyzSpider(Spider):
     name = 'enjoyz'
     allowed_domains = ['enjoyz.com']
-    start_urls = ['http://bbs.enjoyz.com/forum.php?mod=forumdisplay&fid=15&sortid=1&typeid=149&filter=sortid&sortid=1&typeid=149&page=%s' % page for page in xrange(1, 3)]
+    start_urls = ['http://bbs.enjoyz.com/forum.php?mod=forumdisplay&fid=15&sortid=1&typeid=149&filter=sortid&sortid=1&typeid=149&page=%s' % page for page in xrange(1, 20)]
 
     def parse(self, response):
         threads = Selector(response).xpath('//th[@class="new s_ltitle"]')
@@ -30,7 +30,7 @@ class EnjoyzSpider(Spider):
         item['price'] = int(values[1].split(' ')[0])
         item['size'] = values[2][:-1]
         item['stud'] = values[3][:-1]
-        item['is_new'] = values[4][:-1]
+        item['is_new'] = True if values[4][:-1].startswith('\xe5\x85\xa8\xe6\x96\xb0'.decode('utf-8')) else False
         brand_series = values[0]
         # puma » 其他 
         item['brand'] = brand_series.split(' ')[0]
