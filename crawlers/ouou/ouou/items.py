@@ -2,6 +2,7 @@ import scrapy
 from scrapy.item import Item, Field
 
 class OuouItem(scrapy.Item):
+    source      = Field()
     title       = Field()
     url         = Field()
     tid         = Field()
