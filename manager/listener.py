@@ -28,9 +28,9 @@ def main():
                 if doc['op'] == 'i':
                     if 'title' in doc['o'] and 'size' in doc['o'] and 'price' in doc['o']:
                         doc = doc['o']
-                        if doc['size'] == 'JP280' or doc['size'] == 'JP275' or doc['size'] == 'JP285':
+                        if doc['size'] == 280 or doc['size'] == 275 or doc['size'] == 285:
                             time_str = doc['post_time'].strftime("%m-%d %H:%M")
-                            content = doc['size'] + '\t' + str(doc['price']) + '\t' + doc['title'] + '\n' + time_str + '\t' + doc['url'] + '\n' 
+                            content = str(doc['size']) + '\t' + str(doc['price']) + '\t' + doc['title'] + '\n' + time_str + '\t' + doc['url'] + '\n' 
                             write_to_file(content)
             time.sleep(time_gap)
 

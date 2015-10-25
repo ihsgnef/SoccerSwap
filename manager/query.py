@@ -9,7 +9,7 @@ def get_options(line):
         options = right.split(',')
     return category, options
 
-def parse(query_file):
+def condition_to_query(query_file):
     # source, size, price, stud, brand, series, is_new
     and_query = []
     for line in query_file:
@@ -24,12 +24,13 @@ def parse(query_file):
 def main():
     client = pymongo.MongoClient('localhost:27018', replicaset='foo0')
     db = client.forum
-    and_query = parse(open('test_query').readlines())
+    and_query = condition_to_query(open('test_query').readlines())
     print and_query
     cursor = db.threads.find(and_query)
     for document in cursor:
         print document['title']
         print document['url']
+        print ''
 
 if __name__ == '__main__':
     main()
