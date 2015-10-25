@@ -6,6 +6,10 @@ from datetime import datetime
 
 from enjoyz.items import EnjoyzItem 
 
+model_dict = {
+        "legend":"tiempo",
+        }
+
 class EnjoyzSpider(Spider):
     name = 'enjoyz'
     allowed_domains = ['enjoyz.com']
@@ -29,12 +33,15 @@ class EnjoyzSpider(Spider):
 
         values = Selector(response).xpath('//table[@class="cgtl mbm"]//td/text()').extract()
         item['price'] = int(values[1].split(' ')[0])
-        item['size'] = values[2][:-1]
+        item['size'] = int(values[2][2:-1])
         item['stud'] = values[3][:2]
         item['is_new'] = True if values[4][:-1].startswith('\xe5\x85\xa8\xe6\x96\xb0'.decode('utf-8')) else False
         brand_series = values[0]
         # puma » 其他 
         item['brand'] = brand_series.split(' ')[0].lower()
+        if series in model_dict:
+            series = model_dict[series]
+        item['series'] = series
         item['series'] = brand_series.split(' ')[-2].lower()
 
         item['uname'] = Selector(response).xpath('//td[@class="pls"]//div[@class="pi"]//div[@class="authi"]/a/text()').extract()[0]

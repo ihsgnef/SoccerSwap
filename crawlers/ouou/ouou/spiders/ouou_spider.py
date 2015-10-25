@@ -5,12 +5,14 @@ from datetime import datetime
 
 from ouou.items import OuouItem
 
+model_dict = {}
+
 class OuouSpider(Spider):
     name = 'ouou'
     allowed_domains = ['ouou.cn']
     # start_urls = ['http://bbs.ouou.cn/thread-htm-fid-6-type-233-modelid-9.html']
-    start_urls = ['http://bbs.ouou.cn/thread-htm-fid-6-type-233-modelid-9-page-1.html']
-    # start_urls = ['http://bbs.ouou.cn/thread-htm-fid-6-type-233-modelid-9-page-%s.html' % page for page in xrange(1, 2)]
+    # start_urls = ['http://bbs.ouou.cn/thread-htm-fid-6-type-233-modelid-9-page-1.html']
+    start_urls = ['http://bbs.ouou.cn/thread-htm-fid-6-type-233-modelid-9-page-%s.html' % page for page in xrange(1, 3)]
 
     def parse(self, response):
         threads = Selector(response).xpath('//td[@class="subject f14"]')
@@ -59,11 +61,14 @@ class OuouSpider(Spider):
             if key == str_brand:
                 if '>' in value:
                     item['brand'] = value.split(' > ')[0].lower()
-                    item['series'] = value.split(' > ')[1].lower()
+                    series = value.split(' > ')[1].lower()
+                    if series in model_dict:
+                        series = model_dict[series]
+                    item['series'] = series
                 else:
                     item['brand'] = value.lower()
             if key == str_size:
-                item['size'] = value
+                item['size'] = int(value[2:])
             if key == str_stud:
                 item['stud'] = value[:2]
             if key == str_isnew:
