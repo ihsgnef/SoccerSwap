@@ -30,7 +30,7 @@ def main():
                         doc = doc['o']
                         if doc['size'] == 280 or doc['size'] == 275 or doc['size'] == 285:
                             time_str = doc['post_time'].strftime("%m-%d %H:%M")
-                            content = str(doc['size']) + '\t' + str(doc['price']) + '\t' + doc['title'] + '\n' + time_str + '\t' + doc['url'] + '\n' 
+                            content = str(doc['size']) + '\t' + str(doc['price']) + '\t' + doc['title'] + '\n' + time_str + '\n' + doc['url'] + '\n' 
                             write_to_file(content)
             time.sleep(time_gap)
 

@@ -13,7 +13,7 @@ model_dict = {
 class EnjoyzSpider(Spider):
     name = 'enjoyz'
     allowed_domains = ['enjoyz.com']
-    start_urls = ['http://bbs.enjoyz.com/forum.php?mod=forumdisplay&fid=15&sortid=1&typeid=149&filter=sortid&sortid=1&typeid=149&page=%s' % page for page in xrange(1, 3)]
+    start_urls = ['http://bbs.enjoyz.com/forum.php?mod=forumdisplay&fid=15&sortid=1&typeid=149&filter=sortid&sortid=1&typeid=149&page=%s' % page for page in xrange(1, 2)]
 
     def parse(self, response):
         threads = Selector(response).xpath('//th[@class="new s_ltitle"]')
@@ -39,10 +39,10 @@ class EnjoyzSpider(Spider):
         brand_series = values[0]
         # puma » 其他 
         item['brand'] = brand_series.split(' ')[0].lower()
+        series = brand_series.split(' ')[-2].lower()
         if series in model_dict:
             series = model_dict[series]
         item['series'] = series
-        item['series'] = brand_series.split(' ')[-2].lower()
 
         item['uname'] = Selector(response).xpath('//td[@class="pls"]//div[@class="pi"]//div[@class="authi"]/a/text()').extract()[0]
         time_str = Selector(response).xpath('//td[@class="plc"]//div[@class="pti"]//div[@class="authi"]/em/span/@title').extract()
