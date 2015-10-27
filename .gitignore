@@ -4,3 +4,5 @@
 env
 items.json
 log*
+nohup.out
+conditions

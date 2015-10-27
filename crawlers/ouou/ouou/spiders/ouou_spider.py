@@ -28,6 +28,7 @@ class OuouSpider(Spider):
         item['url'] = Selector(response).xpath(
                 '//h1[@id="subject_tpc"][@class="read_h1"]/a[@href="javascript:;"]/@title').extract()[0]
         item['tid'] = item['url'].split('&')[-2].split('=')[-1]
+        item['url'] = 'http://bbs.ouou.cn/read-htm-tid-{}.html'.format(item['tid'])
 
         content_hdr = '//div[@class="tpc_content"]/div[@class="f14 mb10"][@id="read_tpc"]'
 
