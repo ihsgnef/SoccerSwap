@@ -44,7 +44,7 @@ def main():
     first = oplog.find().sort('$natural', pymongo.DESCENDING).limit(-1).next()
     ts = first['ts']
     conds_set = get_conds()
-    _cmd = 'terminal-notifier -message {} -title {} -open {}'
+    _cmd = 'terminal-notifier -message {} -title {} -open {} -sound default'
 
     while True:
         cursor = oplog.find({'ts': {'$gt': ts}}, tailable=True, await_data=True)
