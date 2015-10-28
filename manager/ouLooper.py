@@ -2,7 +2,7 @@ import time
 import os
 import threading
 
-time_gap = 5 * 60
+time_gap = 3 * 60
 
 def main():
     os.chdir('../crawlers/ouou/')

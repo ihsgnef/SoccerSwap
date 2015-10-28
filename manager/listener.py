@@ -61,7 +61,7 @@ def main():
                             content = str(doc['size']) + '\t' + str(doc['price']) + '\t' + doc['title'] + '\n' + time_str + '\n' + doc['url'] + '\n' 
                             write_to_file(content)
 
-                            cmd = _cmd.format(doc['title'].encode('utf-8'), met, doc['url'])
+                            cmd = _cmd.format(doc['title'].encode('utf-8'), met + ' ' + str(doc['price']), doc['url'])
                             os.system(cmd)
                             print met
 
