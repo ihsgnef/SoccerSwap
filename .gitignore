@@ -6,3 +6,4 @@ items.json
 log*
 nohup.out
 conditions
+.venv
